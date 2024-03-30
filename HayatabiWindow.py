@@ -22,7 +22,7 @@ class HayatabiWindow:
 
         if "ログインに成功しました。" in str(result['message']):
             tk.messagebox.showinfo(title="ログイン結果", message=str(result['message']))
-            # 取得した情報をもとに2輪割をもうしこむ
+            # 取得した情報をもとに2輪割を申し込む
             self.postDiscountForm(result, holiday_list)
             tk.messagebox.showinfo(title="申し込み結果", message=f"{str(holiday_list[-1])}までの申し込みが完了しました")
         else:
@@ -57,6 +57,7 @@ class HayatabiWindow:
         self.website_label.place(x=object_left_position, y=initial_position)
         initial_position+=20
 
+        # 「早旅」のサイトリンクラベル
         self.websitelink_label = tk.Label(text="https://hayatabi.c-nexco.co.jp/?&=1699541541096", fg="blue", cursor="hand2")
         self.websitelink_label.pack()
         self.websitelink_label.bind("<Button-1>", lambda e: webbrowser.open_new("https://hayatabi.c-nexco.co.jp/?&=1699541541096"))

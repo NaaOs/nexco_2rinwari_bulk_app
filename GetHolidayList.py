@@ -33,12 +33,12 @@ class GetHolidayList:
         detail_html = session.get("https://hayatabi.c-nexco.co.jp/drive/detail.html?id=164&=1711452392647")
         detail_html_soup = BeautifulSoup(detail_html.text,"html.parser")
         # 申し込み可能日を取得
-        availavle_days_list = detail_html_soup.find_all("td", class_="available")
+        available_days_list = detail_html_soup.find_all("td", class_="available")
 
-        # 1日単位で申し込むため「1日間」で申請するためのIDを抽出
-        availavle_days_list_attrs = [id for id in availavle_days_list if id.attrs['id'].startswith("5431")]
+        # 1日単位で申し込むため割引内容が「1日間」で申請するためのIDを抽出
+        available_days_list_attrs = [id for id in available_days_list if id.attrs['id'].startswith("5431")]
         # 申し込み可能日の最終日を取得
-        last_day = str(availavle_days_list_attrs[-1].attrs['id'])[5:].replace("_", "/")
+        last_day = str(available_days_list_attrs[-1].attrs['id'])[5:].replace("_", "/")
 
         return datetime.strptime(last_day, '%Y/%m/%d').date()
 
@@ -55,6 +55,7 @@ class GetHolidayList:
     # 休日かどうかを判断する関数
     def is_holiday(self, date):
         date = datetime.strptime(date, '%Y/%m/%d')
+        # jpholidayのライブラリを使用して祝日判定を行う
         if(date.weekday() >= 5 or jpholiday.is_holiday(date)):
             return True
         else:
@@ -69,6 +70,7 @@ class GetHolidayList:
 
     def get_holiday(self, mail_address, passwd):
 
+        # 休日を格納するリスト
         holiday_list = []
         # 年度の開始から
         start_date = date(datetime.today().year,4,1)

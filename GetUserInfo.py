@@ -95,6 +95,7 @@ class GetUserInfo:
         # ETC有効期限（月）を取得
         etc_month = edit_soup.find('input', attrs={"name": 'etc_month_0', "type": 'hidden'})['value']
         # 車載器管理番号（メインで登録されている番号のみ）を取得
+        # 複数あった場合バグる
         onboard_number_left = edit_soup.find('input', attrs={"name":'onboard_left_0', "type": 'hidden'})['value']
         onboard_number_middle = edit_soup.find('input', attrs={"name": 'onboard_middle_0', "type": 'hidden'})['value']
         onboard_number_right = edit_soup.find('input', attrs={"name": 'onboard_right_0', "type": 'hidden'})['value']
@@ -106,7 +107,7 @@ class GetUserInfo:
         # ------------------------------------------------------------------
 
         # アカウントの情報が詰まったデータをJSON形式で吐き出す
-        account_info_json = {
+        account_info_obj = {
             "email": mail_address,
             "password": passwd,
             "etc_num": etc_num,
@@ -116,4 +117,4 @@ class GetUserInfo:
             "message": "ログインに成功しました。\n2輪割を申し込みます。\n申し込みには時間がかかります。\nしばらくお待ちください。"
         }
 
-        return account_info_json
+        return account_info_obj

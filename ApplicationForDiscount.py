@@ -16,7 +16,7 @@ class ApplicationForDiscount:
 
         for date in holiday_list:
 
-            # # 申し込む際のリクエストの中身
+            # 申し込む際のリクエストの中身
             discount_order = {
                 "id": "164",
                 "step": "1",
@@ -37,13 +37,13 @@ class ApplicationForDiscount:
             # # STEP1リクエスト送信
             apped_discount_res = session.post(discount_order_url, data=discount_order)
 
-            # すでに申し込んであった場合
+            # 申し込み済みの場合
             if ("同じ出発日に複数のプランを申込むことはできません。" in apped_discount_res.text):
                 print(f"{date}はすでに申し込み済みです")
                 continue
 
             # ------------------------------------------------------------------
-            # 得られた情報から申請承認リスクエストを送るための情報を取得する
+            # レスポンスの情報から「accept_number」を取得する
             # ------------------------------------------------------------------
 
             # htmlにパースする
@@ -78,8 +78,6 @@ class ApplicationForDiscount:
             confirm_screen = session.post(discount_order_url, data=discount_order_step2)
             # エラーならここで例外を発生させる
             confirm_screen.raise_for_status()
-
-        return "申し込みが完了しました"
 
     def app_for_discount(self, user_info, holiday_list):
         # ------------------------------------------------------------------
