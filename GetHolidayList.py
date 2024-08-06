@@ -76,8 +76,9 @@ class GetHolidayList:
         start_date = date(datetime.today().year,4,1)
 
         # 申し込む日が4月１日以降だったら
-        if start_date > date(datetime.today().year,4,1):
+        if datetime.today().date() > date(datetime.today().year,4,1):
             start_date = datetime.today().date()
+            print(f"申し込み開始日は{start_date}です")
 
         # 申し込み最終日
         end_date = self.get_last_day_of_application(mail_address, passwd)
