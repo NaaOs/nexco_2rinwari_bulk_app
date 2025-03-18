@@ -45,4 +45,4 @@ class DoLogin:
         # エラーならここで例外を発生させる
         res.raise_for_status()
 
-        return res
+        return session

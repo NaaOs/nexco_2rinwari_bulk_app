@@ -7,8 +7,7 @@ class GetUserInfo:
     # 早旅トップページ
     HAYATABI_TOP_PAGE = "https://hayatabi.c-nexco.co.jp"
 
-
-    def getUserInfo(self, mail_address, passwd, login_session):
+    def getUserInfo(self, session):
 
         # ------------------------------------------------------------------
         # マイページ遷移
@@ -29,7 +28,7 @@ class GetUserInfo:
         url_mypage = urljoin(login_url, mypage.attrs["href"])
 
         # マイページに遷移する
-        res = login_session.get(url_mypage)
+        res = session.get(url_mypage)
         # エラーならここで例外を発生させる
         res.raise_for_status()
 
@@ -41,7 +40,7 @@ class GetUserInfo:
         url_editmyinfo = self.HAYATABI_TOP_PAGE + "/mypage/member_edit.html?action=edit&=1709739623657"
 
         # 登録内容変更ページに遷移する
-        res = login_session.get(url_editmyinfo)
+        res = session.get(url_editmyinfo)
         # エラーならここで例外を発生させる
         res.raise_for_status()
 
@@ -75,8 +74,6 @@ class GetUserInfo:
 
         # アカウントの情報が詰まったデータをJSON形式で吐き出す
         account_info_obj = {
-            "email": mail_address,
-            "password": passwd,
             "etc_num": etc_num,
             "etc_year": etc_year,
             "etc_month": etc_month,

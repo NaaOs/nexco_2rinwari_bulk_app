@@ -79,7 +79,7 @@ class ApplicationForDiscount:
             # エラーならここで例外を発生させる
             confirm_screen.raise_for_status()
 
-    def app_for_discount(self, user_info, holiday_list, login_session):
+    def app_for_discount(self, user_info, holiday_list, session):
 
         # ------------------------------------------------------------------
         # 申し込み処理
@@ -90,4 +90,4 @@ class ApplicationForDiscount:
         # self.sendReq(session, user_info, holiday_list)
 
         # 本番用
-        self.sendReq(login_session, user_info, holiday_list)
+        self.sendReq(session, user_info, holiday_list)
