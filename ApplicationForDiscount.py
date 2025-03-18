@@ -32,7 +32,7 @@ class ApplicationForDiscount:
                 "free_input": ""
             }
 
-            discount_order_url = "https://hayatabi.c-nexco.co.jp/drive/order.html"
+            discount_order_url = self.HAYATABI_TOP_PAGE + "/drive/order.html"
 
             # # STEP1リクエスト送信
             apped_discount_res = session.post(discount_order_url, data=discount_order)
@@ -79,35 +79,7 @@ class ApplicationForDiscount:
             # エラーならここで例外を発生させる
             confirm_screen.raise_for_status()
 
-    def app_for_discount(self, user_info, holiday_list):
-        # ------------------------------------------------------------------
-        # 初期設定
-        # ------------------------------------------------------------------
-
-        # ログインするためのオブジェクト
-        login_info = {
-            "mail": user_info['email'],
-            "passwd": user_info['password'],
-            "current_url": self.HAYATABI_TOP_PAGE,
-            "step": 2,
-            "action": "lgin"
-        }
-
-        # ------------------------------------------------------------------
-        # ログイン処理
-        # ------------------------------------------------------------------
-
-        # セッションを開始
-        session = requests.session()
-
-        # ログインする際のURL
-        login_url = self.HAYATABI_TOP_PAGE + "/mypage/"
-
-        # ログイン実行
-        res = session.post(login_url, data=login_info)
-
-        # エラーならここで例外を発生させる
-        res.raise_for_status()
+    def app_for_discount(self, user_info, holiday_list, login_session):
 
         # ------------------------------------------------------------------
         # 申し込み処理
@@ -118,4 +90,4 @@ class ApplicationForDiscount:
         # self.sendReq(session, user_info, holiday_list)
 
         # 本番用
-        self.sendReq(session, user_info, holiday_list)
+        self.sendReq(login_session, user_info, holiday_list)

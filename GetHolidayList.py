@@ -9,28 +9,10 @@ class GetHolidayList:
     HAYATABI_TOP_PAGE = "https://hayatabi.c-nexco.co.jp"
 
     # プログラム実行時点の申し込み最終日を取得する
-    def get_last_day_of_application(self, mail_address, passwd):
-
-        # セッションを開始
-        session = requests.session()
-
-        # ログインするためのオブジェクト
-        login_info = {
-            "mail": mail_address,
-            "passwd": passwd,
-            "current_url": self.HAYATABI_TOP_PAGE,
-            "step": 2,
-            "action": "lgin"
-        }
-        # セッションを開始
-        session = requests.session()
-        # ログインする際のURL
-        login_url = self.HAYATABI_TOP_PAGE + "/mypage/"
-        # ログイン実行
-        res = session.post(login_url, data=login_info)
+    def get_last_day_of_application(self, login_session):
 
         # 申し込み日付を指定する画面の情報を取得
-        detail_html = session.get("https://hayatabi.c-nexco.co.jp/drive/detail.html?id=164&=1711452392647")
+        detail_html = login_session.get(self.HAYATABI_TOP_PAGE + "/drive/detail.html?id=164&=1711452392647")
         detail_html_soup = BeautifulSoup(detail_html.text,"html.parser")
         # 申し込み可能日を取得
         available_days_list = detail_html_soup.find_all("td", class_="available")
@@ -68,7 +50,7 @@ class GetHolidayList:
             yield current
             current += step
 
-    def get_holiday(self, mail_address, passwd):
+    def get_holiday(self, login_session):
 
         # 休日を格納するリスト
         holiday_list = []
@@ -81,7 +63,7 @@ class GetHolidayList:
             print(f"申し込み開始日は{start_date}です")
 
         # 申し込み最終日
-        end_date = self.get_last_day_of_application(mail_address, passwd)
+        end_date = self.get_last_day_of_application(login_session)
 
         # 申し込んだ日から年度末までの日付を格納する
         for dy in self.date_range(start_date, end_date):

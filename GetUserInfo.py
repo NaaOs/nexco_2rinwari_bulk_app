@@ -8,43 +8,7 @@ class GetUserInfo:
     HAYATABI_TOP_PAGE = "https://hayatabi.c-nexco.co.jp"
 
 
-    def getUserInfo(self, mail_address, passwd):
-        # ------------------------------------------------------------------
-        # 初期設定
-        # ------------------------------------------------------------------
-
-        # ログインするためのオブジェクト
-        login_info = {
-            "mail": mail_address,
-            "passwd": passwd,
-            "current_url": self.HAYATABI_TOP_PAGE,
-            "step": 2,
-            "action": "lgin"
-        }
-
-        # ------------------------------------------------------------------
-        # ログイン処理
-        # ------------------------------------------------------------------
-
-        # セッションを開始
-        session = requests.session()
-
-        # ログインする際のURL
-        login_url = self.HAYATABI_TOP_PAGE + "/mypage/"
-
-        # ログイン実行
-        res = session.post(login_url, data=login_info)
-
-        # ログインが失敗した際の文言があるか確認
-        cannot_login = res.text.find("メールアドレスまたはパスワードが一致しません。")
-
-        # もしログイン処理が失敗していたら
-        if cannot_login != -1:
-            # print("メールアドレスまたはパスワードが一致しません。")
-            return {"message": "メールアドレスまたはパスワードが一致しません。"}
-
-        # エラーならここで例外を発生させる
-        res.raise_for_status()
+    def getUserInfo(self, mail_address, passwd, login_session):
 
         # ------------------------------------------------------------------
         # マイページ遷移
@@ -58,11 +22,14 @@ class GetUserInfo:
         if mypage is None:
             return {"message": "マイページが取得できませんでした。開発者にお問い合わせください。"}
 
+        # ログインする際のURL
+        login_url = self.HAYATABI_TOP_PAGE + "/mypage/"
+
         # マイページのURLを取得
         url_mypage = urljoin(login_url, mypage.attrs["href"])
 
         # マイページに遷移する
-        res = session.get(url_mypage)
+        res = login_session.get(url_mypage)
         # エラーならここで例外を発生させる
         res.raise_for_status()
 
@@ -71,10 +38,10 @@ class GetUserInfo:
         # ------------------------------------------------------------------
 
         # 登録内容変更ページURL
-        url_editmyinfo = "https://hayatabi.c-nexco.co.jp/mypage/member_edit.html?action=edit&=1709739623657"
+        url_editmyinfo = self.HAYATABI_TOP_PAGE + "/mypage/member_edit.html?action=edit&=1709739623657"
 
         # 登録内容変更ページに遷移する
-        res = session.get(url_editmyinfo)
+        res = login_session.get(url_editmyinfo)
         # エラーならここで例外を発生させる
         res.raise_for_status()
 

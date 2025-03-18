@@ -5,6 +5,7 @@ import GetHolidayList
 import webbrowser
 import pyautogui as pag
 import ApplicationForDiscount
+import DoLogin
 
 class HayatabiWindow:
 
@@ -12,27 +13,31 @@ class HayatabiWindow:
     def get_user_info(self):
         mail_address = self.mail_box.get()
         passwd = self.passed_box.get()
+
+        # ログインセッション開始
+        login_session = DoLogin.DoLogin().doLogin(mail_address, passwd)
+
         # GetHolidayをインスタンス化
         get_holiday = GetHolidayList.GetHolidayList()
-        holiday_list = get_holiday.get_holiday(mail_address, passwd)
+        holiday_list = get_holiday.get_holiday(login_session)
 
         # GetUserinfoをインスタンス化
         get_userinfo = GetUserInfo.GetUserInfo()
-        result = get_userinfo.getUserInfo(mail_address, passwd)
+        result = get_userinfo.getUserInfo(mail_address, passwd, login_session)
 
         if "ログインに成功しました。" in str(result['message']):
             tk.messagebox.showinfo(title="ログイン結果", message=str(result['message']))
             # 取得した情報をもとに2輪割を申し込む
-            self.postDiscountForm(result, holiday_list)
+            self.postDiscountForm(result, holiday_list, login_session)
             tk.messagebox.showinfo(title="申し込み結果", message=f"{str(holiday_list[-1])}までの申し込みが完了しました")
         else:
             tk.messagebox.showinfo(title="ログイン結果", message=str(result['message']))
 
     # 2輪割を申し込む関数です
-    def postDiscountForm(self, result, holiday_list):
+    def postDiscountForm(self, result, holiday_list, login_session):
         # 2輪割申し込み
         app_for_discount = ApplicationForDiscount.ApplicationForDiscount()
-        app_for_discount.app_for_discount(result, holiday_list)
+        app_for_discount.app_for_discount(result, holiday_list, login_session)
 
 
     # ------------------------------------------------------------------
