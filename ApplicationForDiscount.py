@@ -7,6 +7,12 @@ class ApplicationForDiscount:
     # 早旅トップページ
     HAYATABI_TOP_PAGE = "https://hayatabi.c-nexco.co.jp"
 
+    # 年度毎に変わるID
+    PAGE_ID = "173"
+
+    # 年度毎に変わるcourse
+    COURSE_ID = "5507"
+
     # 申し込み承認までをリクエスト
     def sendReq(self, session, user_info, holiday_list):
 
@@ -18,11 +24,11 @@ class ApplicationForDiscount:
 
             # 申し込む際のリクエストの中身
             discount_order = {
-                "id": "164",
+                "id": self.PAGE_ID,
                 "step": "1",
                 "date": str(date),
                 "er": "[[\"5\"],[\"1\"],[\"11\"],[\"1\"]]",
-                "course": "5431",
+                "course": self.COURSE_ID,
                 "price": "s",
                 "etc": user_info['etc_num'],
                 "etc_number": user_info['etc_num'],
@@ -58,9 +64,9 @@ class ApplicationForDiscount:
 
             # 申し込む際のリクエストの中身
             discount_order_step2 = {
-                "id": "164",
+                "id": self.COURSE_ID,
                 "step": "2",
-                "course": "5431",
+                "course": self.COURSE_ID,
                 "date": str(date),
                 "price": "s",
                 "etc_number": user_info['etc_num'],

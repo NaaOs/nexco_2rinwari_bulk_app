@@ -10,34 +10,11 @@ class GetUserInfo:
     def getUserInfo(self, session):
 
         # ------------------------------------------------------------------
-        # マイページ遷移
-        # ------------------------------------------------------------------
-        # htmlにパースする
-        mypage_soup = BeautifulSoup(res.text,"html.parser")
-
-        mypage = mypage_soup.select_one(".btns a")
-
-        # マイページのリンクが取得できたかの確認
-        if mypage is None:
-            return {"message": "マイページが取得できませんでした。開発者にお問い合わせください。"}
-
-        # ログインする際のURL
-        login_url = self.HAYATABI_TOP_PAGE + "/mypage/"
-
-        # マイページのURLを取得
-        url_mypage = urljoin(login_url, mypage.attrs["href"])
-
-        # マイページに遷移する
-        res = session.get(url_mypage)
-        # エラーならここで例外を発生させる
-        res.raise_for_status()
-
-        # ------------------------------------------------------------------
         # 登録内容変更ページに遷移する
         # ------------------------------------------------------------------
 
         # 登録内容変更ページURL
-        url_editmyinfo = self.HAYATABI_TOP_PAGE + "/mypage/member_edit.html?action=edit&=1709739623657"
+        url_editmyinfo = self.HAYATABI_TOP_PAGE + "/mypage/member_edit.html?action=edit"
 
         # 登録内容変更ページに遷移する
         res = session.get(url_editmyinfo)

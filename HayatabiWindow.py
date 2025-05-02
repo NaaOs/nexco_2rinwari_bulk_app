@@ -53,7 +53,7 @@ class HayatabiWindow:
         object_left_position = 30
 
         window = tk.Tk()
-        window.title("【ETC二輪車限定】2024二輪車定率割引 一括申込")
+        window.title("【ETC二輪車限定】2025二輪車定率割引 一括申込")
         # Windowサイズ、場所の指定
         window.geometry("350x200+"+str(int(pag.size().width / 2)-150)+"+"+str(int(pag.size().height / 2)-150))
         window.iconbitmap(default='assets/img_link_logo.ico')
