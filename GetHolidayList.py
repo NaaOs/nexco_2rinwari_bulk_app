@@ -10,14 +10,17 @@ class GetHolidayList:
     # 早旅トップページ
     HAYATABI_TOP_PAGE = "https://hayatabi.c-nexco.co.jp"
 
+    # 年度毎に変わるID
+    PAGE_ID = "203"
+
     # 年度毎に変わるcourse
-    COURSE_ID = "5507"
+    COURSE_ID = "5661"
 
     # プログラム実行時点の申し込み最終日を取得する
     def get_last_day_of_application(self, session):
 
         # 申し込み日付を指定する画面の情報を取得
-        detail_html = session.get(self.HAYATABI_TOP_PAGE + "/drive/detail.html?id=173&=1746180133958")
+        detail_html = session.get(self.HAYATABI_TOP_PAGE + f"/drive/detail.html?id={self.PAGE_ID}&=1746180133958")
         detail_html_soup = BeautifulSoup(detail_html.text,"html.parser")
         # 申し込み可能日を取得
         available_days_list = detail_html_soup.find_all("td", class_="available")
