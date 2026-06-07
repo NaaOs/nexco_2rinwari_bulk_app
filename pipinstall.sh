@@ -1,4 +1,4 @@
 # このプログラムを動かすためのパッケージリストです
-pip install jpholiday
+pip install requests
 pip install beautifulsoup4
-pip install pyautogui
+pip install jpholiday
